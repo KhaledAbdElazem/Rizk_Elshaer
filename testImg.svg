@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Grid -->
+  <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  </pattern>
+  <rect width="100%" height="100%" fill="white"/>
+  <rect width="100%" height="100%" fill="url(#smallGrid)"/>
+
+  <!-- House Outline -->
+  <rect x="100" y="100" width="600" height="400" fill="none" stroke="#2c3e50" stroke-width="2"/>
+
+  <!-- Rooms -->
+  <!-- Living Room -->
+  <rect x="100" y="100" width="300" height="200" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <text x="200" y="200" font-family="Arial" font-size="14" fill="#2c3e50">Living Room</text>
+
+  <!-- Kitchen -->
+  <rect x="400" y="100" width="300" height="200" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <text x="500" y="200" font-family="Arial" font-size="14" fill="#2c3e50">Kitchen</text>
+
+  <!-- Bedrooms -->
+  <rect x="100" y="300" width="200" height="200" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <text x="150" y="400" font-family="Arial" font-size="14" fill="#2c3e50">Bedroom 1</text>
+
+  <rect x="300" y="300" width="200" height="200" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <text x="350" y="400" font-family="Arial" font-size="14" fill="#2c3e50">Bedroom 2</text>
+
+  <!-- Bathroom -->
+  <rect x="500" y="300" width="200" height="200" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <text x="550" y="400" font-family="Arial" font-size="14" fill="#2c3e50">Bathroom</text>
+
+  <!-- Doors -->
+  <path d="M 400 150 A 30 30 0 0 1 430 180" fill="none" stroke="#2c3e50" stroke-width="1"/>
+  <path d="M 300 350 A 30 30 0 0 1 330 380" fill="none" stroke="#2c3e50" stroke-width="1"/>
+  <path d="M 500 350 A 30 30 0 0 1 530 380" fill="none" stroke="#2c3e50" stroke-width="1"/>
+
+  <!-- Windows -->
+  <rect x="150" y="98" width="50" height="4" fill="#2c3e50"/>
+  <rect x="450" y="98" width="50" height="4" fill="#2c3e50"/>
+  <rect x="98" y="350" width="4" height="50" fill="#2c3e50"/>
+  <rect x="698" y="350" width="4" height="50" fill="#2c3e50"/>
+
+  <!-- Measurements -->
+  <text x="250" y="90" font-family="Arial" font-size="12" fill="#666">300cm</text>
+  <text x="710" y="250" font-family="Arial" font-size="12" fill="#666">400cm</text>
+</svg>
