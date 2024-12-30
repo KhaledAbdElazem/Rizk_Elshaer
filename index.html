@@ -64,31 +64,41 @@
             100% { background-position: 0% 50%; }
         }
 
-        .profile-image-container {
-            position: relative;
-            display: inline-block;
-        }
+       .profile-image-container {
+        position: relative;
+        display: inline-block;
+        padding: 8px; /* Add padding to fit the animation */
+        border-radius: 50%;
+        background: transparent; /* Ensure no background obstructs the animation */
+    }
+      .profile-image-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid transparent;
+        background: linear-gradient(45deg, #ff9800, #4b79a1, #283e51);
+        animation: ringEffect 3s linear infinite;
+        z-index: -1; /* Place it behind the image */
+        padding: 8px; /* Adjust to align with container padding */
+    }
 
-        .profile-image {
-            transition: transform 0.3s ease;
-        }
+.profile-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
 
-        .profile-image:hover {
-            transform: scale(1.05);
-        }
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
 
-        .profile-image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            background: linear-gradient(45deg, #ff9800, #4b79a1, #283e51);
-            animation: ringEffect 3s linear infinite;
-        }
+      
 
         @keyframes ringEffect {
             0% {
