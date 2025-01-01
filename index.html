@@ -482,21 +482,39 @@
           ripple.style.width = ripple.style.height = `${diameter}px`;
           ripple.style.left = `${x - radius}px`;
           ripple.style.top = `${y - radius}px`;
-    
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
         }
     
         socialLinks.forEach(button => {
+          let rippleTimeout;
+    
           // For mobile devices
           button.addEventListener('touchstart', function(e) {
             createRipple(e);
           }, { passive: true });
     
+          button.addEventListener('touchend', function(e) {
+            const href = this.getAttribute('href');
+            if (href) {
+              rippleTimeout = setTimeout(() => {
+                window.open(href, '_blank');
+              }, 200); // Small delay to show ripple effect
+            }
+          });
+    
           // For desktop devices
-          button.addEventListener('mousedown', function(e) {
-            createRipple(e);
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href) {
+              rippleTimeout = setTimeout(() => {
+                window.open(href, '_blank');
+              }, 200); // Small delay to show ripple effect
+            }
+          });
+    
+          // Clear timeout if touch/click is canceled
+          button.addEventListener('touchcancel', function() {
+            clearTimeout(rippleTimeout);
           });
         });
     
