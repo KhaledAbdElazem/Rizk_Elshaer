@@ -70,7 +70,7 @@
 
       .glass-container {
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(3px);
+        backdrop-filter: blur(1px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
         width: 90%;
@@ -422,16 +422,16 @@
       // Background Image Rotation
       const images = document.querySelectorAll(".background-image");
       let currentIndex = 0;
-
+    
       function rotateBackground() {
         images.forEach((img) => img.classList.remove("active"));
         images[currentIndex].classList.add("active");
         currentIndex = (currentIndex + 1) % images.length;
       }
-
+    
       rotateBackground();
       setInterval(rotateBackground, 6000);
-
+    
       // Particle Effect
       function createParticle() {
         if (window.innerWidth < 768) return;
@@ -439,39 +439,39 @@
         const container = document.querySelector(".particles-container");
         const particle = document.createElement("div");
         particle.className = "particle";
-
+    
         const size = Math.random() * 4 + 2;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
-
+    
         const startX = Math.random() * window.innerWidth;
         particle.style.left = `${startX}px`;
         particle.style.bottom = "0";
-
+    
         const duration = Math.random() * 4 + 4;
         particle.style.animation = `float ${duration}s linear`;
-
+    
         container.appendChild(particle);
-
+    
         particle.addEventListener("animationend", () => {
           particle.remove();
         });
       }
-
+    
       // Button Animations
       document.addEventListener('DOMContentLoaded', function() {
         const socialLinks = document.querySelectorAll('.social-link');
-
+    
         function createRipple(event) {
           const button = event.currentTarget;
           
           const ripples = button.getElementsByClassName('ripple');
           Array.from(ripples).forEach(ripple => ripple.remove());
-
+    
           const ripple = document.createElement('span');
           ripple.classList.add('ripple');
           button.appendChild(ripple);
-
+    
           const diameter = Math.max(button.clientWidth, button.clientHeight);
           const radius = diameter / 2;
           
@@ -482,21 +482,24 @@
           ripple.style.width = ripple.style.height = `${diameter}px`;
           ripple.style.left = `${x - radius}px`;
           ripple.style.top = `${y - radius}px`;
-
+    
           setTimeout(() => {
             ripple.remove();
           }, 600);
         }
-
+    
         socialLinks.forEach(button => {
-          button.addEventListener('touchstart', createRipple);
-          button.addEventListener('mousedown', createRipple);
-          
-          button.addEventListener('touchend', e => {
-            e.preventDefault();
+          // For mobile devices
+          button.addEventListener('touchstart', function(e) {
+            createRipple(e);
+          }, { passive: true });
+    
+          // For desktop devices
+          button.addEventListener('mousedown', function(e) {
+            createRipple(e);
           });
         });
-
+    
         if (window.innerWidth <= 768) {
           socialLinks.forEach((link, index) => {
             gsap.from(link, {
@@ -509,76 +512,77 @@
           });
         }
       });
-
+    
       const particleInterval = window.innerWidth < 768 ? 400 : 200;
       setInterval(createParticle, particleInterval);
-
+    
       // Handle resize
       function handleResize() {
         const container = document.querySelector(".background-container");
         container.style.height = `${window.innerHeight}px`;
       }
-
+    
       window.addEventListener("resize", handleResize);
       handleResize();
-
+    
       // Add touch feedback
       document.addEventListener('touchstart', function() {}, {passive: true});
-      // Add this to your existing script
-function createSparkle() {
-  if (window.innerWidth < 768) return;
-  
-  const profileContainer = document.querySelector('.profile-image-container');
-  const sparkle = document.createElement('div');
-  sparkle.className = 'sparkle';
-  
-  const size = Math.random() * 4 + 2;
-  sparkle.style.width = `${size}px`;
-  sparkle.style.height = `${size}px`;
-  
-  const angle = Math.random() * Math.PI * 2;
-  const radius = 60 + Math.random() * 20;
-  const x = Math.cos(angle) * radius;
-  const y = Math.sin(angle) * radius;
-  
-  sparkle.style.left = `calc(50% + ${x}px)`;
-  sparkle.style.top = `calc(50% + ${y}px)`;
-  
-  profileContainer.appendChild(sparkle);
-  
-  setTimeout(() => sparkle.remove(), 1000);
-}
-
-// Add sparkle styles
-const styleSheet = document.createElement('style');
-styleSheet.textContent = `
-  .sparkle {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkle-fade 1s ease-in-out forwards;
-  }
-
-  @keyframes sparkle-fade {
-    0% {
-      transform: scale(0) rotate(0deg);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1) rotate(180deg);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(0) rotate(360deg);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(styleSheet);
-
-// Create sparkles periodically
-setInterval(createSparkle, 200);
+    
+      // Sparkle Effect
+      function createSparkle() {
+        if (window.innerWidth < 768) return;
+        
+        const profileContainer = document.querySelector('.profile-image-container');
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        
+        const size = Math.random() * 4 + 2;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 60 + Math.random() * 20;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        sparkle.style.left = `calc(50% + ${x}px)`;
+        sparkle.style.top = `calc(50% + ${y}px)`;
+        
+        profileContainer.appendChild(sparkle);
+        
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    
+      // Add sparkle styles
+      const styleSheet = document.createElement('style');
+      styleSheet.textContent = `
+        .sparkle {
+          position: absolute;
+          background: white;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: sparkle-fade 1s ease-in-out forwards;
+        }
+    
+        @keyframes sparkle-fade {
+          0% {
+            transform: scale(0) rotate(0deg);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1) rotate(180deg);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(0) rotate(360deg);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+    
+      // Create sparkles periodically
+      setInterval(createSparkle, 200);
     </script>
   </body>
 </html>
