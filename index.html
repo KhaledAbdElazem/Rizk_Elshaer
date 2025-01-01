@@ -17,6 +17,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
       body {
         font-family: 'Poppins', sans-serif;
@@ -78,21 +79,74 @@
         padding: 2rem 1.5rem;
       }
 
+      .profile-image-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1.5rem;
+      }
+
+      .profile-image-container::before,
+      .profile-image-container::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        animation: rotate 2s linear infinite;
+      }
+
+      .profile-image-container::before {
+        border-top-color: #ff3366;
+        border-right-color: #ff3366;
+      }
+
+      .profile-image-container::after {
+        border-bottom-color: #00ff99;
+        border-left-color: #00ff99;
+        animation-delay: -1s;
+      }
+
       .social-link {
         width: 100%;
         margin: 0.75rem 0;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
-      .social-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      .social-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
       }
 
-      .profile-image-container {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 1.5rem;
+      .social-link:active::before {
+        left: 100%;
+      }
+
+      .ripple {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        pointer-events: none;
+        width: 100px;
+        height: 100px;
+        transform: translate(-50%, -50%) scale(0);
+        animation: ripple 1s linear;
       }
 
       @media (max-width: 640px) {
@@ -112,6 +166,33 @@
         .social-link {
           padding: 0.75rem 1rem !important;
           font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .social-link {
+          transform: scale(1);
+          transition: transform 0.3s ease;
+        }
+
+        .social-link:active {
+          transform: scale(0.95);
+        }
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes ripple {
+        to {
+          transform: translate(-50%, -50%) scale(4);
+          opacity: 0;
         }
       }
 
@@ -243,9 +324,9 @@
       rotateBackground();
       setInterval(rotateBackground, 6000);
 
-      // Optimized Particle Effect for Mobile
+      // Particle Effect
       function createParticle() {
-        if (window.innerWidth < 768) return; // Disable particles on mobile
+        if (window.innerWidth < 768) return;
         
         const container = document.querySelector(".particles-container");
         const particle = document.createElement("div");
@@ -269,9 +350,53 @@
         });
       }
 
-      // Reduce particle frequency on mobile
       const particleInterval = window.innerWidth < 768 ? 400 : 200;
       setInterval(createParticle, particleInterval);
+
+      // Mobile Animations
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.innerWidth <= 768) {
+          // Animate profile image
+          gsap.to('.profile-image-container', {
+            duration: 2,
+            scale: 1.1,
+            yoyo: true,
+            repeat: -1,
+            ease: 'power1.inOut'
+          });
+
+          // Animate social links
+          const socialLinks = document.querySelectorAll('.social-link');
+          socialLinks.forEach((link, index) => {
+            gsap.from(link, {
+              duration: 0.5,
+              x: -100,
+              opacity: 0,
+              delay: index * 0.2,
+              ease: 'power2.out'
+            });
+          });
+
+          // Add touch ripple effect
+          socialLinks.forEach(link => {
+            link.addEventListener('touchstart', function(e) {
+              const x = e.touches[0].clientX - this.offsetLeft;
+              const y = e.touches[0].clientY - this.offsetTop;
+              
+              const ripple = document.createElement('div');
+              ripple.className = 'ripple';
+              ripple.style.left = `${x}px`;
+              ripple.style.top = `${y}px`;
+              
+              this.appendChild(ripple);
+              
+              setTimeout(() => {
+                ripple.remove();
+              }, 1000);
+            });
+          });
+        }
+      });
 
       // Handle resize
       function handleResize() {
@@ -281,6 +406,9 @@
 
       window.addEventListener("resize", handleResize);
       handleResize();
+
+      // Add touch feedback
+      document.addEventListener('touchstart', function() {}, {passive: true});
     </script>
   </body>
 </html>
