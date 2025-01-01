@@ -4,37 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rizk Elshaer</title>
-    <!-- Add AOS library for scroll animations -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <!-- Add Tailwind CSS for utility classes -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <!-- Add custom fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
-    <!-- Add FontAwesome -->
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
     <style>
-      :root {
-        --primary-color: #ff9800;
-        --background-dark: #1e1e2e;
+      body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
       }
 
-      body {
-        font-family: "Poppins", sans-serif;
-        background: url("testImg.svg"),
-          linear-gradient(-45deg, #1e1e2e, #4b79a1, #283e51, #1e1e2e);
-        background-size: 400px 400px, 400% 400%;
-        animation: gradientBG 15s ease infinite,
-          moveBlueprint 30s linear infinite;
-        background-blend-mode: overlay;
+      .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        z-index: -2;
+      }
+
+      .background-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        transform: scale(1.1);
+      }
+
+      .active {
+        opacity: 0.6;
+        animation: zoomEffect 20s infinite alternate;
+      }
+
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: float 6s infinite;
       }
 
       .glass-container {
@@ -42,182 +72,215 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 2rem 1.5rem;
       }
 
       .social-link {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .social-link::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
         width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transition: 0.5s;
+        margin: 0.75rem 0;
+        transition: all 0.3s ease;
       }
 
-      .social-link:hover::before {
-        left: 100%;
-      }
-
-      @keyframes gradientBG {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
+      .social-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
 
       .profile-image-container {
-        position: relative;
-        display: inline-block;
-        padding: 8px; /* Add padding to fit the animation */
-        border-radius: 50%;
-        background: transparent; /* Ensure no background obstructs the animation */
-      }
-      .profile-image-container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 4px solid transparent;
-        background: linear-gradient(45deg, #ff9800, #4b79a1, #283e51);
-        animation: ringEffect 3s linear infinite;
-        z-index: -1; /* Place it behind the image */
-        padding: 8px; /* Adjust to align with container padding */
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1.5rem;
       }
 
-      .profile-image {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
+      @media (max-width: 640px) {
+        .glass-container {
+          padding: 1.5rem 1rem;
+        }
+
+        .profile-image-container {
+          width: 100px;
+          height: 100px;
+        }
+
+        h1 {
+          font-size: 1.75rem !important;
+        }
+
+        .social-link {
+          padding: 0.75rem 1rem !important;
+          font-size: 0.9rem;
+        }
       }
 
-      .profile-image:hover {
-        transform: scale(1.05);
-      }
-
-      @keyframes ringEffect {
+      @keyframes zoomEffect {
         0% {
-          transform: rotate(0deg);
+          transform: scale(1.1) translate(0, 0);
+        }
+        50% {
+          transform: scale(1.2) translate(-1%, -1%);
         }
         100% {
-          transform: rotate(360deg);
+          transform: scale(1.1) translate(1%, 1%);
         }
       }
-      @keyframes moveBlueprint {
+
+      @keyframes float {
         0% {
-          background-position: 0 0, 0% 50%;
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
         }
         100% {
-          background-position: 100% 100%, 100% 50%;
+          transform: translateY(-100vh) translateX(20px);
+          opacity: 0;
         }
       }
     </style>
   </head>
   <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="glass-container max-w-md w-full p-8" data-aos="fade-up">
+    <div class="background-container">
+      <img src="1.jpeg" class="background-image" alt="" />
+      <img src="2.jpeg" class="background-image" alt="" />
+      <img src="3.jpeg" class="background-image" alt="" />
+    </div>
+    <div class="particles-container"></div>
+
+    <div class="glass-container" data-aos="fade-up">
       <div class="text-center">
-        <div class="profile-image-container w-32 h-32 mx-auto mb-6">
+        <div class="profile-image-container">
           <img
             src="re.jpeg"
             alt="Rizk Elshaer"
-            class="profile-image w-full h-full rounded-full object-cover shadow-lg"
+            class="w-full h-full rounded-full object-cover shadow-lg"
             data-aos="zoom-in"
           />
         </div>
 
-        <h1
-          class="text-3xl font-bold text-white mb-8"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
+        <h1 class="text-3xl font-bold text-white mb-6" data-aos="fade-up" data-aos-delay="200">
           Rizk Elshaer
         </h1>
 
-        <div class="space-y-4">
+        <div class="flex flex-col gap-3">
           <a
             href="https://www.instagram.com/elshaer_desgin/profilecard/"
-            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full"
             data-aos="fade-up"
             data-aos-delay="300"
             target="_blank"
           >
-            <i class="fab fa-instagram text-xl"></i>
+            <i class="fab fa-instagram"></i>
             <span>Instagram (Design)</span>
           </a>
 
           <a
             href="https://www.instagram.com/elshaer_structural1/profilecard/"
-            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-full"
             data-aos="fade-up"
             data-aos-delay="400"
             target="_blank"
           >
-            <i class="fab fa-instagram text-xl"></i>
+            <i class="fab fa-instagram"></i>
             <span>Instagram (Structural)</span>
           </a>
 
           <a
             href="https://www.facebook.com/profile.php?id=61565724596348"
-            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 px-6 rounded-full"
             data-aos="fade-up"
             data-aos-delay="500"
             target="_blank"
           >
-            <i class="fab fa-facebook text-xl"></i>
+            <i class="fab fa-facebook"></i>
             <span>Facebook</span>
           </a>
 
           <a
             href="https://t.me/+201021057497"
-            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white py-3 px-6 rounded-full"
             data-aos="fade-up"
             data-aos-delay="600"
             target="_blank"
           >
-            <i class="fab fa-telegram text-xl"></i>
+            <i class="fab fa-telegram"></i>
             <span>Telegram</span>
           </a>
 
           <a
             href="https://wa.me/201021057497"
-            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-6 rounded-full"
             target="_blank"
           >
-            <i class="fab fa-whatsapp text-xl"></i>
+            <i class="fab fa-whatsapp"></i>
             <span>WhatsApp</span>
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Add AOS library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init({
         duration: 1000,
         once: true,
+        disable: window.innerWidth < 768
       });
+
+      // Background Image Rotation
+      const images = document.querySelectorAll(".background-image");
+      let currentIndex = 0;
+
+      function rotateBackground() {
+        images.forEach((img) => img.classList.remove("active"));
+        images[currentIndex].classList.add("active");
+        currentIndex = (currentIndex + 1) % images.length;
+      }
+
+      rotateBackground();
+      setInterval(rotateBackground, 6000);
+
+      // Optimized Particle Effect for Mobile
+      function createParticle() {
+        if (window.innerWidth < 768) return; // Disable particles on mobile
+        
+        const container = document.querySelector(".particles-container");
+        const particle = document.createElement("div");
+        particle.className = "particle";
+
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        const startX = Math.random() * window.innerWidth;
+        particle.style.left = `${startX}px`;
+        particle.style.bottom = "0";
+
+        const duration = Math.random() * 4 + 4;
+        particle.style.animation = `float ${duration}s linear`;
+
+        container.appendChild(particle);
+
+        particle.addEventListener("animationend", () => {
+          particle.remove();
+        });
+      }
+
+      // Reduce particle frequency on mobile
+      const particleInterval = window.innerWidth < 768 ? 400 : 200;
+      setInterval(createParticle, particleInterval);
+
+      // Handle resize
+      function handleResize() {
+        const container = document.querySelector(".background-container");
+        container.style.height = `${window.innerHeight}px`;
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
     </script>
   </body>
 </html>
