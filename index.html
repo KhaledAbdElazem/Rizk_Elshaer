@@ -80,73 +80,195 @@
       }
 
       .profile-image-container {
-        position: relative;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 1.5rem;
-      }
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  animation: float-profile 6s ease-in-out infinite;
+}
 
-      .profile-image-container::before,
-      .profile-image-container::after {
-        content: '';
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        border-radius: 50%;
-        border: 2px solid transparent;
-        animation: rotate 2s linear infinite;
-      }
+.profile-image-container::before,
+.profile-image-container::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #ff3366,
+    #ff6b6b,
+    #ffd93d,
+    #6c5ce7,
+    #00ff99,
+    #ff3366
+  );
+  animation: rotate 4s linear infinite;
+}
 
-      .profile-image-container::before {
-        border-top-color: #ff3366;
-        border-right-color: #ff3366;
-      }
+.profile-image-container::after {
+  filter: blur(15px);
+  opacity: 0.5;
+}
 
-      .profile-image-container::after {
-        border-bottom-color: #00ff99;
-        border-left-color: #00ff99;
-        animation-delay: -1s;
-      }
+.profile-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.profile-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.magical-border {
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent;
+  animation: rotate-reverse 8s linear infinite;
+}
+
+.magical-border::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-left-color: rgba(255, 255, 255, 0.5);
+  animation: rotate 6s linear infinite;
+}
+
+.magical-border::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-right-color: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+  animation: rotate-reverse 4s linear infinite;
+}
+
+.profile-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 70%
+  );
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes float-profile {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Add this for better mobile performance */
+@media (max-width: 768px) {
+  .profile-image-container {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .magical-border {
+    inset: -10px;
+  }
+  
+  .profile-glow {
+    inset: -15px;
+  }
+}
 
       .social-link {
         width: 100%;
         margin: 0.75rem 0;
-        transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        transform: translateZ(0);
+        transition: transform 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        touch-action: manipulation;
       }
 
-      .social-link::before {
+      .social-link::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
         background: linear-gradient(
-          90deg,
+          to right,
           transparent,
-          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.3),
           transparent
         );
-        transition: 0.5s;
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+        pointer-events: none;
       }
 
-      .social-link:active::before {
-        left: 100%;
+      .social-link:active {
+        transform: scale(0.95);
+      }
+
+      .social-link:focus {
+        outline: none;
       }
 
       .ripple {
         position: absolute;
-        background: rgba(255, 255, 255, 0.3);
         border-radius: 50%;
-        pointer-events: none;
-        width: 100px;
-        height: 100px;
-        transform: translate(-50%, -50%) scale(0);
-        animation: ripple 1s linear;
+        transform: scale(0);
+        animation: ripple-effect 0.6s linear;
+        background-color: rgba(255, 255, 255, 0.3);
       }
 
       @media (max-width: 640px) {
@@ -169,17 +291,6 @@
         }
       }
 
-      @media (max-width: 768px) {
-        .social-link {
-          transform: scale(1);
-          transition: transform 0.3s ease;
-        }
-
-        .social-link:active {
-          transform: scale(0.95);
-        }
-      }
-
       @keyframes rotate {
         0% {
           transform: rotate(0deg);
@@ -189,9 +300,18 @@
         }
       }
 
-      @keyframes ripple {
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) rotate(45deg);
+        }
+      }
+
+      @keyframes ripple-effect {
         to {
-          transform: translate(-50%, -50%) scale(4);
+          transform: scale(4);
           opacity: 0;
         }
       }
@@ -231,18 +351,20 @@
     </div>
     <div class="particles-container"></div>
 
-    <div class="glass-container" data-aos="fade-up">
+    <div class="glass-container">
       <div class="text-center">
         <div class="profile-image-container">
-          <img
-            src="re.jpeg"
-            alt="Rizk Elshaer"
-            class="w-full h-full rounded-full object-cover shadow-lg"
-            data-aos="zoom-in"
-          />
+          <div class="magical-border"></div>
+          <div class="profile-glow"></div>
+          <div class="profile-wrapper">
+            <img
+              src="re.jpeg"
+              alt="Rizk Elshaer"
+              class="w-full h-full rounded-full object-cover shadow-lg"
+            />
+          </div>
         </div>
-
-        <h1 class="text-3xl font-bold text-white mb-6" data-aos="fade-up" data-aos-delay="200">
+        <h1 class="text-3xl font-bold text-white mb-6">
           Rizk Elshaer
         </h1>
 
@@ -250,8 +372,6 @@
           <a
             href="https://www.instagram.com/elshaer_desgin/profilecard/"
             class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full"
-            data-aos="fade-up"
-            data-aos-delay="300"
             target="_blank"
           >
             <i class="fab fa-instagram"></i>
@@ -261,8 +381,6 @@
           <a
             href="https://www.instagram.com/elshaer_structural1/profilecard/"
             class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-full"
-            data-aos="fade-up"
-            data-aos-delay="400"
             target="_blank"
           >
             <i class="fab fa-instagram"></i>
@@ -272,8 +390,6 @@
           <a
             href="https://www.facebook.com/profile.php?id=61565724596348"
             class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 px-6 rounded-full"
-            data-aos="fade-up"
-            data-aos-delay="500"
             target="_blank"
           >
             <i class="fab fa-facebook"></i>
@@ -283,8 +399,6 @@
           <a
             href="https://t.me/+201021057497"
             class="social-link flex items-center justify-center gap-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white py-3 px-6 rounded-full"
-            data-aos="fade-up"
-            data-aos-delay="600"
             target="_blank"
           >
             <i class="fab fa-telegram"></i>
@@ -305,12 +419,6 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init({
-        duration: 1000,
-        once: true,
-        disable: window.innerWidth < 768
-      });
-
       // Background Image Rotation
       const images = document.querySelectorAll(".background-image");
       let currentIndex = 0;
@@ -350,53 +458,60 @@
         });
       }
 
-      const particleInterval = window.innerWidth < 768 ? 400 : 200;
-      setInterval(createParticle, particleInterval);
-
-      // Mobile Animations
+      // Button Animations
       document.addEventListener('DOMContentLoaded', function() {
-        if (window.innerWidth <= 768) {
-          // Animate profile image
-          gsap.to('.profile-image-container', {
-            duration: 2,
-            scale: 1.1,
-            yoyo: true,
-            repeat: -1,
-            ease: 'power1.inOut'
-          });
+        const socialLinks = document.querySelectorAll('.social-link');
 
-          // Animate social links
-          const socialLinks = document.querySelectorAll('.social-link');
+        function createRipple(event) {
+          const button = event.currentTarget;
+          
+          const ripples = button.getElementsByClassName('ripple');
+          Array.from(ripples).forEach(ripple => ripple.remove());
+
+          const ripple = document.createElement('span');
+          ripple.classList.add('ripple');
+          button.appendChild(ripple);
+
+          const diameter = Math.max(button.clientWidth, button.clientHeight);
+          const radius = diameter / 2;
+          
+          const rect = button.getBoundingClientRect();
+          const x = event.touches ? event.touches[0].clientX - rect.left : event.clientX - rect.left;
+          const y = event.touches ? event.touches[0].clientY - rect.top : event.clientY - rect.top;
+          
+          ripple.style.width = ripple.style.height = `${diameter}px`;
+          ripple.style.left = `${x - radius}px`;
+          ripple.style.top = `${y - radius}px`;
+
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        }
+
+        socialLinks.forEach(button => {
+          button.addEventListener('touchstart', createRipple);
+          button.addEventListener('mousedown', createRipple);
+          
+          button.addEventListener('touchend', e => {
+            e.preventDefault();
+          });
+        });
+
+        if (window.innerWidth <= 768) {
           socialLinks.forEach((link, index) => {
             gsap.from(link, {
               duration: 0.5,
               x: -100,
               opacity: 0,
-              delay: index * 0.2,
+              delay: index * 0.1,
               ease: 'power2.out'
-            });
-          });
-
-          // Add touch ripple effect
-          socialLinks.forEach(link => {
-            link.addEventListener('touchstart', function(e) {
-              const x = e.touches[0].clientX - this.offsetLeft;
-              const y = e.touches[0].clientY - this.offsetTop;
-              
-              const ripple = document.createElement('div');
-              ripple.className = 'ripple';
-              ripple.style.left = `${x}px`;
-              ripple.style.top = `${y}px`;
-              
-              this.appendChild(ripple);
-              
-              setTimeout(() => {
-                ripple.remove();
-              }, 1000);
             });
           });
         }
       });
+
+      const particleInterval = window.innerWidth < 768 ? 400 : 200;
+      setInterval(createParticle, particleInterval);
 
       // Handle resize
       function handleResize() {
@@ -409,6 +524,61 @@
 
       // Add touch feedback
       document.addEventListener('touchstart', function() {}, {passive: true});
+      // Add this to your existing script
+function createSparkle() {
+  if (window.innerWidth < 768) return;
+  
+  const profileContainer = document.querySelector('.profile-image-container');
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  
+  const size = Math.random() * 4 + 2;
+  sparkle.style.width = `${size}px`;
+  sparkle.style.height = `${size}px`;
+  
+  const angle = Math.random() * Math.PI * 2;
+  const radius = 60 + Math.random() * 20;
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  
+  sparkle.style.left = `calc(50% + ${x}px)`;
+  sparkle.style.top = `calc(50% + ${y}px)`;
+  
+  profileContainer.appendChild(sparkle);
+  
+  setTimeout(() => sparkle.remove(), 1000);
+}
+
+// Add sparkle styles
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+  .sparkle {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle-fade 1s ease-in-out forwards;
+  }
+
+  @keyframes sparkle-fade {
+    0% {
+      transform: scale(0) rotate(0deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1) rotate(180deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0) rotate(360deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(styleSheet);
+
+// Create sparkles periodically
+setInterval(createSparkle, 200);
     </script>
   </body>
 </html>
